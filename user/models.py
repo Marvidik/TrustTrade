@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from django.conf import settings
+
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
     country_code = models.CharField(max_length=5, blank=True, null=True)
@@ -11,3 +13,13 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+
+class VerificationDocument(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    doc_type = models.CharField(max_length=50)  # e.g., 'passport', 'national_id'
+    document = models.ImageField(upload_to='kyc_documents/')
+    is_verified = models.BooleanField(default=False)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+

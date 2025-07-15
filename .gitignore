@@ -4,3 +4,8 @@ db.sqlite3
 
 test.html
 test2.html
+test3.html
+
+staticfiles/
+
+/staticfiles
