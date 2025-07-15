@@ -1,0 +1,6 @@
+.env
+myvenv/
+db.sqlite3
+
+test.html
+test2.html
