@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import VerificationDocument, SocialConnection
+from .models import VerificationDocument
 
 class VerificationDocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = VerificationDocument
-        fields = ['id', 'doc_type', 'document', 'is_verified', 'submitted_at']
+        fields = ['id', 'doc_type', 'front_document','back_document', 'is_verified', 'submitted_at']
 

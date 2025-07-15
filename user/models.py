@@ -19,7 +19,8 @@ class CustomUser(AbstractUser):
 class VerificationDocument(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     doc_type = models.CharField(max_length=50)  # e.g., 'passport', 'national_id'
-    document = models.ImageField(upload_to='kyc_documents/')
+    front_document = models.ImageField(upload_to='kyc_documents/')
+    back_document = models.ImageField(upload_to='kyc_documents/')
     is_verified = models.BooleanField(default=False)
     submitted_at = models.DateTimeField(auto_now_add=True)
 
