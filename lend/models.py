@@ -23,3 +23,25 @@ class Match(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('declined', 'Declined')], default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
+    repaid=models.BooleanField(default=False)
+    paid=models.BooleanField(default=False)
+
+
+    def __str__ (self):
+        return self.borrower.username + self.lender.username
+
+
+
+
+class TrustRating(models.Model):
+    match = models.OneToOneField(Match, on_delete=models.CASCADE)  # One rating per match
+    score = models.PositiveIntegerField()
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def rated_user(self):
+        return self.match.borrower  # The one being rated
+
+    def rater(self):
+        return self.match.lender  # The one giving the rating
+

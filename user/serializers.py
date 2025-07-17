@@ -10,6 +10,10 @@ class VerificationDocumentSerializer(serializers.ModelSerializer):
         fields = ['id', 'doc_type', 'front_document','back_document', 'is_verified', 'submitted_at']
 
 class UserSerializer(serializers.ModelSerializer):
+    average_trust_score = serializers.SerializerMethodField()
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'phone_number', 'trust_score', 'language_preference', 'country_code']
+        fields = ['id', 'username', 'phone_number', 'trust_score', 'language_preference', 'country_code','average_trust_score']
+
+    def get_average_trust_score(self, obj):
+        return obj.average_trust_score

@@ -14,6 +14,13 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
+    @property
+    def average_trust_score(self):
+        from lend.models import TrustRating
+        ratings = TrustRating.objects.filter(match__borrower=self)
+        if not ratings.exists():
+            return None
+        return round(sum(r.score for r in ratings) / ratings.count(), 1)
 
 
 class VerificationDocument(models.Model):

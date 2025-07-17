@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Listing,Match
-from .serializers import ListingSerializer,MatchSerializer
+from .serializers import ListingSerializer,MatchSerializer,TrustRatingSerializer
 from django.db import models
 
 
@@ -55,3 +55,29 @@ def user_matches(request):
     matches = Match.objects.filter(models.Q(borrower=request.user) | models.Q(lender=request.user))
     serializer = MatchSerializer(matches, many=True)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def rate_user(request):
+    match_id = request.data.get('match')
+    try:
+        match = Match.objects.get(id=match_id)
+    except Match.DoesNotExist:
+        return Response({'detail': 'Match not found'}, status=404)
+
+    if match.lender != request.user:
+        return Response({'detail': 'Only the lender can rate the borrower'}, status=403)
+    
+    if match.status != 'accepted':
+        return Response({'detail': 'Only Accepted Matches can be Rated'}, status=403)
+
+    if hasattr(match, 'trustrating'):
+        return Response({'detail': 'This match has already been rated'}, status=400)
+
+    serializer = TrustRatingSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+
+    return Response(serializer.errors, status=400)
