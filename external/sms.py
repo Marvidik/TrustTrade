@@ -18,7 +18,7 @@ def send_otp(phone_number):
         .create(to=phone_number, channel="sms")
     return verification.status  # usually "pending"
 
-send_otp("+2348132106194")
+# send_otp("+2348132106194")
 
 def verify_otp(phone_number, code):
     check = client.verify \
