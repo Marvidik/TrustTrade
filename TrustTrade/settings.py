@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +28,13 @@ SECRET_KEY = 'django-insecure-$xk=apxz_reg99%q738o99c8##&@gz_edkamtl@8yche=qnh)d
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+
+# Now use them
+TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+TWILIO_VERIFY_SID = os.getenv('TWILIO_VERIFY_SID')
 
 
 # Application definition
@@ -46,6 +55,7 @@ INSTALLED_APPS = [
     'authe',
     'lend',
     'user',
+    'external',
 ]
 
 ASGI_APPLICATION = 'TrustTrade.asgi.application'

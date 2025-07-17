@@ -9,3 +9,7 @@ test3.html
 staticfiles/
 
 /staticfiles
+
+media/
+media
+/media
