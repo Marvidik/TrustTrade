@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view,authentication_classes,permission
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from .serializers import VerificationDocumentSerializer
+from django.shortcuts import get_object_or_404
+from .serializers import UserSerializer
 # Create your views here.
 
 
@@ -53,3 +55,10 @@ def upload_document(request):
         serializer.save(user=request.user)
         return Response(serializer.data)
     return Response(serializer.errors, status=400)
+
+
+@api_view(['GET'])
+def user_detail(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
