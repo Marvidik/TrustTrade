@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'lend',
     'user',
     'external',
+    'wallet',
 ]
 
 ASGI_APPLICATION = 'TrustTrade.asgi.application'
