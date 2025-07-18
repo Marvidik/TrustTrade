@@ -18,8 +18,8 @@ class CustomUser(AbstractUser):
     def average_trust_score(self):
         from lend.models import TrustRating
         ratings = TrustRating.objects.filter(match__borrower=self)
-        if not ratings.exists():
-            return None
+        if not ratings.exists() or ratings.count() < 3:
+            return 0
         return round(sum(r.score for r in ratings) / ratings.count(), 1)
 
 
